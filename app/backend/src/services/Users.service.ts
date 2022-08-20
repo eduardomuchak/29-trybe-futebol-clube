@@ -5,10 +5,12 @@ import BcryptService from './Bcrypt.service';
 import JwtService from './Jwt.service';
 
 export default class UsersService implements ILoginService {
+  private db = UserModel;
+
   public login = async (data: LoginRequest): Promise<string> => {
     const { email, password } = data;
-    const unauthorizedError = new CustomError(401, 'Unauthorized user');
-    const user: IUser | null = await UserModel.findOne({ where: { email } });
+    const unauthorizedError = new CustomError(401, 'Incorrect email or password');
+    const user: IUser | null = await this.db.findOne({ where: { email } });
 
     if (!user) {
       throw unauthorizedError;
@@ -23,5 +25,14 @@ export default class UsersService implements ILoginService {
     const token = JwtService.sign({ email, password });
 
     return token;
+  };
+
+  public validateLogin = (data: LoginRequest): LoginRequest => {
+    const { email, password } = data;
+    const requiredError = new CustomError(400, 'All fields must be filled');
+    if (!email || !password) {
+      throw requiredError;
+    }
+    return data;
   };
 }

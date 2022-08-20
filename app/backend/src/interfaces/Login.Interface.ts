@@ -5,4 +5,5 @@ export interface LoginRequest {
 
 export interface ILoginService {
   login(reqBody: LoginRequest): Promise<string>;
+  validateLogin(reqBody: LoginRequest): void;
 }

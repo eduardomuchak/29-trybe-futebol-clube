@@ -5,9 +5,9 @@ export default class UsersController {
   constructor(private usersService = new UsersService()) {}
 
   public login = async (req: Request, res: Response) => {
-    const { email, password } = req.body;
+    const isValidUser = this.usersService.validateLogin(req.body);
 
-    const token = await this.usersService.login({ email, password });
+    const token = await this.usersService.login(isValidUser);
     res.status(200).json({ token });
   };
 }
