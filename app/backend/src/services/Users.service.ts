@@ -35,4 +35,15 @@ export default class UsersService implements ILoginService {
     }
     return data;
   };
+
+  public getRoleByAuthorization = async (authorization: string): Promise<string | undefined> => {
+    const email = JwtService.verify(authorization);
+    const user: IUser | null = await this.db.findOne({ where: { email } });
+
+    if (!user) {
+      throw new CustomError(404, 'User not found');
+    }
+
+    return user.role;
+  };
 }
