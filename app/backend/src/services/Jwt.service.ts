@@ -1,7 +1,6 @@
 import 'dotenv/config';
 import { sign, verify, Secret, SignOptions, JwtPayload } from 'jsonwebtoken';
 import CustomError from '../helpers/CustomError';
-// import EmailJwtPayload from '../interfaces/Jwt.interface';
 
 const secret: Secret = process.env.JWT_SECRET || 'jwt_secret';
 
