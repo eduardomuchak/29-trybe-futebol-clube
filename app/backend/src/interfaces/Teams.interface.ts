@@ -1,8 +1,8 @@
-export type Teams = {
+export type Team = {
   id: number;
   teamName: string;
 };
 
 export interface ITeamService {
-  list(): Promise<Teams[]>;
+  list(): Promise<Team[]>;
 }
