@@ -39,9 +39,10 @@ export default class UsersService implements ILoginService {
   public getRoleByAuthorization = async (authorization: string): Promise<string | undefined> => {
     const email = JwtService.verify(authorization);
     const user: IUser | null = await this.db.findOne({ where: { email } });
+    const userNotFoundError = new CustomError(404, 'User not found');
 
     if (!user) {
-      throw new CustomError(404, 'User not found');
+      throw userNotFoundError;
     }
 
     return user.role;

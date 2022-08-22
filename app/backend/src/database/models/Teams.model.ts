@@ -9,7 +9,6 @@ class TeamModel extends Model {
 TeamModel.init({
   id: {
     type: INTEGER,
-    allowNull: false,
     primaryKey: true,
     autoIncrement: true,
   },
@@ -19,7 +18,7 @@ TeamModel.init({
   },
 }, {
   sequelize: db,
-  modelName: 'teams',
+  modelName: 'team',
   underscored: true,
   timestamps: false,
   tableName: 'teams',
