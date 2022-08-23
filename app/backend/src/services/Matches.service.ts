@@ -60,4 +60,25 @@ export default class MatchesService implements IMatchesService {
 
     return match;
   };
+
+  // isValidMatch = async (homeTeamId: number, awayTeamId: number): Promise<void> => {
+  //   const sameTeamsError = new CustomError(
+  //     401,
+  //     'It is not possible to create a match with two equal teams',
+  //   );
+  //   if (homeTeamId === awayTeamId) {
+  //     throw sameTeamsError;
+  //   }
+  // };
+
+  public isValidTeams = async (homeTeamId: number, awayTeamId: number): Promise<void> => {
+    const notFoundError = new CustomError(404, 'There is no team with such id!');
+
+    const homeTeam = await TeamModel.findOne({ where: { id: homeTeamId } });
+    const awayTeam = await TeamModel.findOne({ where: { id: awayTeamId } });
+
+    if (!homeTeam || !awayTeam) {
+      throw notFoundError;
+    }
+  };
 }

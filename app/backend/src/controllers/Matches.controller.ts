@@ -26,22 +26,19 @@ export default class MatchesController {
   };
 
   public create = async (req: Request, res: Response) => {
-    const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
+    const { homeTeam, awayTeam } = req.body;
     const { authorization } = req.headers;
 
     if (!authorization) {
-      throw new CustomError(404, 'Authorization not found');
+      throw new CustomError(401, 'Token must be a valid token');
     }
-
+    if (homeTeam === awayTeam) {
+      throw new CustomError(401, 'It is not possible to create a match with two equal teams');
+    }
     JwtService.validateToken(authorization);
+    await this.matchesService.isValidTeams(homeTeam, awayTeam);
 
-    const match = {
-      homeTeam,
-      homeTeamGoals,
-      awayTeam,
-      awayTeamGoals,
-      inProgress: true,
-    };
+    const match = { ...req.body, inProgress: true };
 
     const newMatch = await this.matchesService.create(match);
     res.status(201).json(newMatch);
@@ -61,4 +58,12 @@ export default class MatchesController {
 
     res.status(200).json({ message: 'Finished' });
   };
+
+  // public isValidMatch = async (req: Request, _res: Response, next: NextFunction) => {
+  //   const { homeTeam, awayTeam } = req.body;
+
+  //   this.matchesService.isValidMatch(homeTeam, awayTeam);
+
+  //   next();
+  // };
 }
