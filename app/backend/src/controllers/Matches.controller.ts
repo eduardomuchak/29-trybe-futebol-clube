@@ -1,4 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
+import CustomError from '../helpers/CustomError';
+import JwtService from '../services/Jwt.service';
 import MatchesService from '../services/Matches.service';
 
 export default class MatchesController {
@@ -21,5 +23,27 @@ export default class MatchesController {
       const matches = await this.matchesService.listInProgress(false);
       res.status(200).json(matches);
     }
+  };
+
+  public create = async (req: Request, res: Response) => {
+    const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
+    const { authorization } = req.headers;
+
+    if (!authorization) {
+      throw new CustomError(404, 'Authorization not found');
+    }
+
+    JwtService.validateToken(authorization);
+
+    const match = {
+      homeTeam,
+      homeTeamGoals,
+      awayTeam,
+      awayTeamGoals,
+      inProgress: true,
+    };
+
+    const newMatch = await this.matchesService.create(match);
+    res.status(201).json(newMatch);
   };
 }

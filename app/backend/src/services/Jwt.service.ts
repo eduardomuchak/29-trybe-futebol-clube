@@ -21,4 +21,14 @@ export default class JwtService {
 
     return email;
   };
+
+  static validateToken = (token: string): true => {
+    const data = verify(token, secret) as JwtPayload;
+
+    if (!data) {
+      throw new CustomError(404, 'Invalid token');
+    }
+
+    return true;
+  };
 }

@@ -39,4 +39,9 @@ export default class MatchesService implements IMatchesService {
     );
     return matches;
   };
+
+  public create = async (match: Match): Promise<Match> => {
+    const createdMatch = await this.db.create(match);
+    return createdMatch;
+  };
 }
