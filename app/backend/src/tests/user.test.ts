@@ -24,14 +24,6 @@ const failureLoginMock = {
   password: 'trybe',
 };
 
-const onlyEmailMock = {
-  email: 'eduardo@betrybe.com.br'
-};
-
-const onlyPasswordMock = {
-  password: 'trybe'
-};
-
 const tokenMock = {
   token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInBhc3N3b3JkIjoic2VjcmV0X2FkbWluIiwiaWF0IjoxNjYxMTk3NDY1LCJleHAiOjE2NjEyMDEwNjV9.fxwGDtpFSe-Lqt_qD4VWPd9u3sLOsISYIt-0idXIX04"
 };
@@ -78,7 +70,7 @@ describe('#/login', () => {
   it('should return an error if attempt to login with email only', async () => {
     const response = await chai.request(app)
       .post('/login')
-      .send(onlyEmailMock);
+      .send(failureLoginMock.email);
 
     expect(response.status).to.equal(400);
     expect(response.body.message).to.equal('All fields must be filled');
@@ -87,7 +79,7 @@ describe('#/login', () => {
   it('should return an error if attempt to login with password only', async () => {
     const response = await chai.request(app)
       .post('/login')
-      .send(onlyPasswordMock);
+      .send(failureLoginMock.password);
 
     expect(response.status).to.equal(400);
     expect(response.body.message).to.equal('All fields must be filled');
