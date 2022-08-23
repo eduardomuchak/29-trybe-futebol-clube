@@ -46,4 +46,19 @@ export default class MatchesController {
     const newMatch = await this.matchesService.create(match);
     res.status(201).json(newMatch);
   };
+
+  public finishMatch = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { authorization } = req.headers;
+
+    if (!authorization) {
+      throw new CustomError(404, 'Authorization not found');
+    }
+
+    JwtService.validateToken(authorization);
+
+    await this.matchesService.finishMatch(Number(id));
+
+    res.status(200).json({ message: 'Finished' });
+  };
 }
