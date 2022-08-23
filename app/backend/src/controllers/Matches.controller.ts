@@ -66,4 +66,14 @@ export default class MatchesController {
 
   //   next();
   // };
+
+  public changeMatchResult = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { homeTeamGoals, awayTeamGoals } = req.body;
+
+    const match = await this.matchesService
+      .changeMatchResult(Number(id), homeTeamGoals, awayTeamGoals);
+
+    res.status(200).json({ match });
+  };
 }

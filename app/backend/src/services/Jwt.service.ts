@@ -23,12 +23,11 @@ export default class JwtService {
   };
 
   static validateToken = (token: string): true => {
-    const data = verify(token, secret) as JwtPayload;
-
-    if (!data) {
-      throw new CustomError(404, 'Invalid token');
+    try {
+      verify(token, secret) as JwtPayload;
+      return true;
+    } catch (error) {
+      throw new CustomError(401, 'Token must be a valid token');
     }
-
-    return true;
   };
 }

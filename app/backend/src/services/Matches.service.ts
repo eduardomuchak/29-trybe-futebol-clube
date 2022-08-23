@@ -81,4 +81,24 @@ export default class MatchesService implements IMatchesService {
       throw notFoundError;
     }
   };
+
+  public changeMatchResult = async (
+    matchId: number,
+    homeTeamGoals: number,
+    awayTeamGoals: number,
+  ): Promise<Match> => {
+    const notFoundError = new CustomError(404, 'Match not found');
+
+    const match = await this.db.findOne({ where: { id: matchId } });
+
+    if (!match) {
+      throw notFoundError;
+    }
+
+    match.homeTeamGoals = homeTeamGoals;
+    match.awayTeamGoals = awayTeamGoals;
+    await match.save();
+
+    return match;
+  };
 }
