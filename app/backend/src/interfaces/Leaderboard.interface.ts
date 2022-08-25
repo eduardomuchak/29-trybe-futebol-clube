@@ -8,6 +8,12 @@ export type MatchesResult = {
   draws: number;
 };
 
+export type GoalsResult = {
+  goalsFavor: number;
+  goalsOwn: number;
+  goalsBalance: number;
+};
+
 export interface Leaderboard {
   name?: string,
   totalPoints?: number,
