@@ -1,19 +1,39 @@
-import TeamModel from '../database/models/Teams.model';
-import MatchesModel from '../database/models/Matches.model';
+import { ILeaderboardService, Leaderboard, Match } from '../interfaces';
+import TeamsService from './Teams.service';
+import MatchesService from './Matches.service';
+import Calculator from '../helpers/Calculator';
 
-import { ILeaderboardService } from '../interfaces';
+type Place = 'home' | 'away';
 
 export default class LeaderboardService implements ILeaderboardService {
-  private teamDb = TeamModel;
-  private matchesDb = MatchesModel;
+  private teamService = new TeamsService();
+  private matchesService = new MatchesService();
+  private calculator = new Calculator();
 
-  public listHomeLeaderboard = async (): Promise<any> => {
-    const getAllTeams = await this.teamDb.findAll({
-      attributes: ['teamName'],
-    });
+  public createLeaderboard = (place: Place, matches: Match[]): Leaderboard => {
+    const teamPlace = place === 'home' ? 'Home' : 'Away';
+    return {
+      name: matches[0][`team${teamPlace}`]?.teamName,
+      totalPoints: this.calculator.totalPoints('home', matches),
+    };
+  };
 
-    const allTeams = getAllTeams.map((team) => team.teamName);
+  public getLeaderboard = async (teamPlace: Place): Promise<Leaderboard[]> => {
+    const formatedTeamPlace = teamPlace === 'home' ? 'Home' : 'Away';
 
-    return allTeams;
+    const allTeams = await this.teamService.list();
+    const finishedMatches = await this.matchesService.listInProgress(false);
+
+    const result = await Promise.all(
+      allTeams.map((team) => {
+        const teamMatches = finishedMatches
+          .filter((
+            match: Match,
+          ) => team.teamName === match[`team${formatedTeamPlace}`]?.teamName);
+        return this.createLeaderboard(teamPlace, teamMatches);
+      }),
+    );
+
+    return result;
   };
 }
