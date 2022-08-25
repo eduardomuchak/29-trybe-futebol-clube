@@ -1,6 +1,12 @@
 import { Match } from './Matches.interface';
 
-type Place = 'home' | 'away';
+export type Place = 'home' | 'away';
+
+export type MatchesResult = {
+  victories: number;
+  losses: number;
+  draws: number;
+};
 
 export interface Leaderboard {
   name?: string,

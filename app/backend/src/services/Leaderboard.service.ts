@@ -1,20 +1,24 @@
-import { ILeaderboardService, Leaderboard, Match } from '../interfaces';
+import { ILeaderboardService, Leaderboard, Match, Place } from '../interfaces';
 import TeamsService from './Teams.service';
 import MatchesService from './Matches.service';
-import Calculator from '../helpers/Calculator';
-
-type Place = 'home' | 'away';
+import PointsCalculator from '../helpers/PointsCalculator';
+import MatchesCalculator from '../helpers/MatchesCalculator';
 
 export default class LeaderboardService implements ILeaderboardService {
   private teamService = new TeamsService();
   private matchesService = new MatchesService();
-  private calculator = new Calculator();
+  private pointsCalculator = new PointsCalculator();
+  private matchesCalculator = new MatchesCalculator();
 
   public createLeaderboard = (place: Place, matches: Match[]): Leaderboard => {
     const teamPlace = place === 'home' ? 'Home' : 'Away';
     return {
       name: matches[0][`team${teamPlace}`]?.teamName,
-      totalPoints: this.calculator.totalPoints('home', matches),
+      totalPoints: this.pointsCalculator.totalPoints('home', matches),
+      totalGames: matches.length,
+      totalVictories: this.matchesCalculator.countMatchesResult('home', matches)?.victories,
+      totalDraws: this.matchesCalculator.countMatchesResult('home', matches)?.draws,
+      totalLosses: this.matchesCalculator.countMatchesResult('home', matches)?.losses,
     };
   };
 

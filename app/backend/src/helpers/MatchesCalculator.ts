@@ -1,20 +1,20 @@
-import { Match } from '../interfaces';
+import { Match, Place, MatchesResult } from '../interfaces';
 
-type Place = 'home' | 'away';
-
-export default class Calculator {
-  public totalPoints = (teamPlace : Place, matches: Match[]): number => {
+export default class MatchesCalculator {
+  public countMatchesResult = (teamPlace : Place, matches: Match[]): MatchesResult => {
     const otherTeamPlace = teamPlace === 'home' ? 'away' : 'home';
-    let points = 0;
+    let victories = 0;
+    let losses = 0;
+    let draws = 0;
     matches.forEach((match) => {
       if (match[`${teamPlace}TeamGoals`] > match[`${otherTeamPlace}TeamGoals`]) {
-        points += 3;
+        victories += 1;
       } else if (match[`${teamPlace}TeamGoals`] < match[`${otherTeamPlace}TeamGoals`]) {
-        points += 0;
+        losses += 1;
       } else if (match[`${teamPlace}TeamGoals`] === match[`${otherTeamPlace}TeamGoals`]) {
-        points += 1;
+        draws += 1;
       }
     });
-    return points;
+    return { victories, losses, draws };
   };
 }
