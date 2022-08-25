@@ -4,6 +4,7 @@ import MatchesService from './Matches.service';
 import PointsCalculator from '../helpers/PointsCalculator';
 import MatchesCalculator from '../helpers/MatchesCalculator';
 import GoalsCalculator from '../helpers/GoalsCalculator';
+import OrdenateLeaderboard from '../helpers/OrdenateLeaderboard';
 
 export default class LeaderboardService implements ILeaderboardService {
   private teamService = new TeamsService();
@@ -11,15 +12,16 @@ export default class LeaderboardService implements ILeaderboardService {
   private pointsCalculator = new PointsCalculator();
   private matchesCalculator = new MatchesCalculator();
   private goalsCalculator = new GoalsCalculator();
+  private ordenateLeaderboard = new OrdenateLeaderboard();
 
   public createLeaderboard = (place: Place, matches: Match[]): Leaderboard => {
-    const teamPlace = place === 'home' ? 'Home' : 'Away';
+    const teamPlaceFormated = place === 'home' ? 'Home' : 'Away';
     const efficiency = this.matchesCalculator.efficiency(
       this.pointsCalculator.totalPoints(place, matches),
       matches.length,
     );
     return {
-      name: matches[0][`team${teamPlace}`]?.teamName,
+      name: matches[0][`team${teamPlaceFormated}`]?.teamName,
       totalPoints: this.pointsCalculator.totalPoints(place, matches),
       totalGames: matches.length,
       totalVictories: this.matchesCalculator.countMatchesResult(place, matches)?.victories,
@@ -47,6 +49,8 @@ export default class LeaderboardService implements ILeaderboardService {
       return this.createLeaderboard(teamPlace, teamMatches);
     });
 
-    return result;
+    const sortedResult = this.ordenateLeaderboard.sort(result);
+
+    return sortedResult;
   };
 }
