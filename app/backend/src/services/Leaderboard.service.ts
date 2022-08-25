@@ -14,16 +14,21 @@ export default class LeaderboardService implements ILeaderboardService {
 
   public createLeaderboard = (place: Place, matches: Match[]): Leaderboard => {
     const teamPlace = place === 'home' ? 'Home' : 'Away';
+    const efficiency = this.matchesCalculator.efficiency(
+      this.pointsCalculator.totalPoints(place, matches),
+      matches.length,
+    );
     return {
       name: matches[0][`team${teamPlace}`]?.teamName,
-      totalPoints: this.pointsCalculator.totalPoints('home', matches),
+      totalPoints: this.pointsCalculator.totalPoints(place, matches),
       totalGames: matches.length,
-      totalVictories: this.matchesCalculator.countMatchesResult('home', matches)?.victories,
-      totalDraws: this.matchesCalculator.countMatchesResult('home', matches)?.draws,
-      totalLosses: this.matchesCalculator.countMatchesResult('home', matches)?.losses,
+      totalVictories: this.matchesCalculator.countMatchesResult(place, matches)?.victories,
+      totalDraws: this.matchesCalculator.countMatchesResult(place, matches)?.draws,
+      totalLosses: this.matchesCalculator.countMatchesResult(place, matches)?.losses,
       goalsFavor: this.goalsCalculator.counter(place, matches)?.goalsFavor,
       goalsOwn: this.goalsCalculator.counter(place, matches)?.goalsOwn,
       goalsBalance: this.goalsCalculator.counter(place, matches)?.goalsBalance,
+      efficiency,
     };
   };
 

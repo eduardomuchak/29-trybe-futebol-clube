@@ -24,7 +24,7 @@ export interface Leaderboard {
   goalsFavor?: number,
   goalsOwn?: number,
   goalsBalance?: number,
-  efficiency?: string
+  efficiency?: number
 }
 
 export interface ILeaderboardService {

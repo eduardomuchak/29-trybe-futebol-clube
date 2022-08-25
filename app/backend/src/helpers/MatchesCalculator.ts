@@ -21,4 +21,7 @@ export default class MatchesCalculator {
     });
     return matchesResult;
   };
+
+  public efficiency = (totalPoints: number, totalMatches: number): number =>
+    Number(((totalPoints / (totalMatches * 3)) * 100).toFixed(2));
 }
