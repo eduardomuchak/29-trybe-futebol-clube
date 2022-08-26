@@ -34,7 +34,7 @@ export default class LeaderboardService implements ILeaderboardService {
     };
   };
 
-  public getLeaderboard = async (teamPlace: Place): Promise<Leaderboard[]> => {
+  public getHomeOrAwayLeaderboard = async (teamPlace: Place): Promise<Leaderboard[]> => {
     const formatedTeamPlace = teamPlace === 'home' ? 'Home' : 'Away';
 
     const allTeams = await this.teamService.list();
@@ -53,4 +53,25 @@ export default class LeaderboardService implements ILeaderboardService {
 
     return sortedResult;
   };
+
+  public getHomeAndAwayLeaderboard = (home: Leaderboard[], away: Leaderboard[]): Leaderboard[] =>
+    this.ordenateLeaderboard.sort(home.map((homeTeam) => away.reduce((acc, awayTeam) => {
+      if (homeTeam.name === awayTeam.name) {
+        return ({
+          name: homeTeam.name,
+          totalPoints: homeTeam.totalPoints + awayTeam.totalPoints,
+          totalGames: homeTeam.totalGames + awayTeam.totalGames,
+          totalVictories: homeTeam.totalVictories + awayTeam.totalVictories,
+          totalDraws: homeTeam.totalDraws + awayTeam.totalDraws,
+          totalLosses: homeTeam.totalLosses + awayTeam.totalLosses,
+          goalsFavor: homeTeam.goalsFavor + awayTeam.goalsFavor,
+          goalsOwn: homeTeam.goalsOwn + awayTeam.goalsOwn,
+          goalsBalance: homeTeam.goalsBalance + awayTeam.goalsBalance,
+          efficiency: this.matchesCalculator.efficiency(
+            (homeTeam.totalPoints + awayTeam.totalPoints),
+            (homeTeam.totalGames + awayTeam.totalGames),
+          ) });
+      }
+      return acc;
+    }, homeTeam)));
 }

@@ -24,10 +24,14 @@ export interface Leaderboard {
   goalsFavor: number,
   goalsOwn: number,
   goalsBalance: number,
-  efficiency: number
+  efficiency: string
 }
 
 export interface ILeaderboardService {
   createLeaderboard(place: Place, matches: Match[]): Leaderboard;
-  getLeaderboard(place: Place): Promise<Leaderboard[]>;
+  getHomeOrAwayLeaderboard(place: Place): Promise<Leaderboard[]>;
+  getHomeAndAwayLeaderboard(
+    homeLeaderboard: Leaderboard[],
+    awayLeaderboard: Leaderboard[]
+  ): Leaderboard[];
 }
