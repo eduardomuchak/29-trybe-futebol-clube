@@ -54,6 +54,42 @@ const matchesMock = [
 	},
 ]
 
+const inProgressMatchesMock = [
+  {
+		id: 41,
+		homeTeam: 16,
+		homeTeamGoals: 2,
+		awayTeam: 9,
+		awayTeamGoals: 0,
+		inProgress: true,
+	},
+  {
+		id: 42,
+		homeTeam: 6,
+		homeTeamGoals: 1,
+		awayTeam: 1,
+		awayTeamGoals: 0,
+		inProgress: true,
+	},
+	{
+		id: 43,
+		homeTeam: 11,
+		homeTeamGoals: 0,
+		awayTeam: 10,
+		awayTeamGoals: 0,
+		inProgress: true,
+	},
+	{
+		id: 44,
+		homeTeam: 7,
+		homeTeamGoals: 2,
+		awayTeam: 15,
+		awayTeamGoals: 2,
+		inProgress: true,
+	},
+]
+
+
 describe('#/matches', () => {
   
   beforeEach(async () => {
@@ -69,3 +105,29 @@ describe('#/matches', () => {
     expect(res.body).to.deep.equal(matchesMock);
   });  
 });
+
+describe('#/matches?inProgress=boolean', () => {
+  
+  beforeEach(async () => {
+    sinon.restore();
+  });
+  
+  it('should return a list with only the matches in progress', async () => {
+    sinon.stub(MatchesModel, 'findAll').resolves(inProgressMatchesMock as MatchesModel[]);
+    
+    const res = await chai.request(app).get('/matches?inProgress=true');
+    
+    expect(res.status).to.equal(200);
+    expect(res.body).to.deep.equal(inProgressMatchesMock);
+  });
+
+  it('should return a list with only the finished matches', async () => {
+    sinon.stub(MatchesModel, 'findAll').resolves(matchesMock as MatchesModel[]);
+    
+    const res = await chai.request(app).get('/matches?inProgress=false');
+    
+    expect(res.status).to.equal(200);
+    expect(res.body).to.deep.equal(matchesMock);
+  });
+});
+
