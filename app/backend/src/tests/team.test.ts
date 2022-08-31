@@ -78,11 +78,6 @@ const teamsMock = [
 	}
 ]
 
-const searchedTeamMock = {
-  id: 12,
-  teamName: "Palmeiras"
-};
-
 const notFoundMock = { 
   message: 'Team not found'
 };
@@ -110,12 +105,12 @@ describe('#/teams/:id', () => {
   });
 
   it('should return the id and name of a team searched by id', async () => {
-    sinon.stub(TeamsModel, 'findOne').resolves(searchedTeamMock as TeamsModel);
+    sinon.stub(TeamsModel, 'findOne').resolves(teamsMock[11] as TeamsModel);
     
     const response = await chai.request(app).get('/teams/12');
 
     expect(response.status).to.equal(200);
-    expect(response.body).to.deep.equal(searchedTeamMock);
+    expect(response.body).to.deep.equal(teamsMock[11]);
   });
 
   it('should return a 404 error if the team searched by id does not exist', async () => {
