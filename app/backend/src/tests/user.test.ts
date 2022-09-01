@@ -15,7 +15,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('#/login', () => {
+describe('#GET /login', () => {
   
   beforeEach(async () => {
     sinon.restore();

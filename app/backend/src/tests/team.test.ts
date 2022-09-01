@@ -12,7 +12,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('#/teams', () => {
+describe('#GET /teams', () => {
   
   beforeEach(async () => {
     sinon.restore();
@@ -28,7 +28,7 @@ describe('#/teams', () => {
   });  
 });
 
-describe('#/teams/:id', () => {
+describe('#GET /teams/:id', () => {
   
   beforeEach(async () => {
     sinon.restore();

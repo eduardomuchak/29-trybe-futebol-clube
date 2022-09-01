@@ -16,7 +16,7 @@ import { createMatchMock, inProgressMatchesMock, matchesMock } from './mocks/mat
 chai.use(chaiHttp);
 
 const { expect } = chai;
-describe('#/matches', () => {
+describe('#GET /matches', () => {
   
   beforeEach(async () => {
     sinon.restore();
@@ -32,7 +32,7 @@ describe('#/matches', () => {
   });  
 });
 
-describe('#/matches?inProgress=boolean', () => {
+describe('#GET /matches?inProgress=boolean', () => {
   
   beforeEach(async () => {
     sinon.restore();
@@ -57,7 +57,7 @@ describe('#/matches?inProgress=boolean', () => {
   });
 });
 
-describe('#/matches/:id/finish', () => {
+describe('#PATCH /matches/:id/finish', () => {
   
   beforeEach(async () => {
     sinon.restore();
