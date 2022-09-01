@@ -9,32 +9,11 @@ import chaiHttp = require('chai-http');
 import UserModel from '../database/models/Users.model';
 import BcryptService from '../services/Bcrypt.service';
 import JwtService from '../services/Jwt.service';
+import { failureLoginMock, successLoginMock, tokenMock, userMock } from './mocks/user.mock';
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
-
-const successLoginMock = {
-  email: 'admin@admin.com',
-  password: 'secret_admin',
-};
-
-const failureLoginMock = {
-  email: 'eduardo@betrybe.com.br',
-  password: 'trybe',
-};
-
-const tokenMock = {
-  token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInBhc3N3b3JkIjoic2VjcmV0X2FkbWluIiwiaWF0IjoxNjYxMTk3NDY1LCJleHAiOjE2NjEyMDEwNjV9.fxwGDtpFSe-Lqt_qD4VWPd9u3sLOsISYIt-0idXIX04"
-};
-
-const userMock = {
-  id: 1,
-  username: 'admin',
-  email: "admin@admin.com",
-  password: "secret_admin",
-  role: "admin",
-}
 
 describe('#/login', () => {
   
