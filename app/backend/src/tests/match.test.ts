@@ -9,125 +9,13 @@ import MatchesModel from '../database/models/Matches.model';
 
 // @ts-ignore
 import chaiHttp = require('chai-http');
+import { createMatchMock, inProgressMatchesMock, matchesMock } from './mocks/match.mock';
 // import BcryptService from '../services/Bcrypt.service';
 // import JwtService from '../services/Jwt.service';
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
-
-const matchesMock = [
-  {
-		id: 1,
-		homeTeam: 16,
-		homeTeamGoals: 1,
-		awayTeam: 8,
-		awayTeamGoals: 1,
-		inProgress: false,
-	},
-  {
-		id: 2,
-		homeTeam: 9,
-		homeTeamGoals: 1,
-		awayTeam: 14,
-		awayTeamGoals: 1,
-		inProgress: false,
-	},
-	{
-		id: 3,
-		homeTeam: 4,
-		homeTeamGoals: 3,
-		awayTeam: 11,
-		awayTeamGoals: 0,
-		inProgress: false,
-	},
-	{
-		id: 4,
-		homeTeam: 3,
-		homeTeamGoals: 0,
-		awayTeam: 2,
-		awayTeamGoals: 0,
-		inProgress: false,
-	},
-	{
-		id: 5,
-		homeTeam: 7,
-		homeTeamGoals: 1,
-		awayTeam: 10,
-		awayTeamGoals: 1,
-		inProgress: false,
-	},
-]
-
-const inProgressMatchesMock = [
-  {
-		id: 41,
-		homeTeam: 16,
-		homeTeamGoals: 2,
-		awayTeam: 9,
-		awayTeamGoals: 0,
-		inProgress: true,
-	},
-  {
-		id: 42,
-		homeTeam: 6,
-		homeTeamGoals: 1,
-		awayTeam: 1,
-		awayTeamGoals: 0,
-		inProgress: true,
-	},
-	{
-		id: 43,
-		homeTeam: 11,
-		homeTeamGoals: 0,
-		awayTeam: 10,
-		awayTeamGoals: 0,
-		inProgress: true,
-	},
-	{
-		id: 44,
-		homeTeam: 7,
-		homeTeamGoals: 2,
-		awayTeam: 15,
-		awayTeamGoals: 2,
-		inProgress: true,
-	},
-]
-
-// const successLoginMock = {
-//   email: 'admin@admin.com',
-//   password: 'secret_admin',
-// };
-
-// const userMock = {
-//   id: 1,
-//   username: 'admin',
-//   email: "admin@admin.com",
-//   password: "secret_admin",
-//   role: "admin",
-// }
-
-// const tokenMock = {
-//   token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInBhc3N3b3JkIjoic2VjcmV0X2FkbWluIiwiaWF0IjoxNjYxMTk3NDY1LCJleHAiOjE2NjEyMDEwNjV9.fxwGDtpFSe-Lqt_qD4VWPd9u3sLOsISYIt-0idXIX04"
-// };
-
-const createMatchMock = {
-  homeTeam: 1,
-  awayTeam: 2,
-  homeTeamGoals: 1,
-  awayTeamGoals: 1,
-}
-
-// const createdMatchMock = {
-//   id: 60,
-//   homeTeam: 1,
-//   homeTeamGoals: 1,
-//   awayTeam: 2,
-//   awayTeamGoals: 1,
-//   inProgress: true,
-// }
-
-
 describe('#/matches', () => {
   
   beforeEach(async () => {
